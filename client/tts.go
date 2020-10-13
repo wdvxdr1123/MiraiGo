@@ -4,15 +4,17 @@ import (
 	"errors"
 	"fmt"
 	"github.com/Mrs4s/MiraiGo/binary"
-	"github.com/Mrs4s/MiraiGo/client/pb/richmedia"
+	"github.com/Mrs4s/MiraiGo/binary/pb/richmedia"
 	"github.com/Mrs4s/MiraiGo/utils"
 	"github.com/golang/protobuf/proto"
+	"io/ioutil"
 )
 
 func (c *QQClient) GetTts(text string) ([]byte, error) {
 	url := "https://textts.qq.com/cgi-bin/tts"
 	data := fmt.Sprintf("{\"appid\": \"201908021016\",\"sendUin\": %v,\"text\": \"%v\"}", c.Uin, text)
 	rsp, err := utils.HttpPostBytesWithCookie(url, []byte(data), c.getCookies())
+	ioutil.WriteFile("tts",rsp,777)
 	if err != nil {
 		return nil, err
 	}

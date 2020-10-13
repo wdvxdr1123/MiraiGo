@@ -4,9 +4,10 @@ import (
 	"encoding/hex"
 	"errors"
 	"fmt"
-	"github.com/Mrs4s/MiraiGo/client/pb/notify"
-	"github.com/Mrs4s/MiraiGo/client/pb/pttcenter"
-	"github.com/Mrs4s/MiraiGo/client/pb/qweb"
+	"github.com/Mrs4s/MiraiGo/binary/pb/notify"
+	"github.com/Mrs4s/MiraiGo/binary/pb/pttcenter"
+	"github.com/Mrs4s/MiraiGo/binary/pb/qweb"
+	"io/ioutil"
 	"log"
 	"net"
 	"strconv"
@@ -17,13 +18,13 @@ import (
 
 	"github.com/Mrs4s/MiraiGo/binary"
 	"github.com/Mrs4s/MiraiGo/binary/jce"
-	"github.com/Mrs4s/MiraiGo/client/pb"
-	"github.com/Mrs4s/MiraiGo/client/pb/cmd0x352"
-	"github.com/Mrs4s/MiraiGo/client/pb/longmsg"
-	"github.com/Mrs4s/MiraiGo/client/pb/msg"
-	"github.com/Mrs4s/MiraiGo/client/pb/multimsg"
-	"github.com/Mrs4s/MiraiGo/client/pb/oidb"
-	"github.com/Mrs4s/MiraiGo/client/pb/structmsg"
+	"github.com/Mrs4s/MiraiGo/binary/pb"
+	"github.com/Mrs4s/MiraiGo/binary/pb/cmd0x352"
+	"github.com/Mrs4s/MiraiGo/binary/pb/longmsg"
+	"github.com/Mrs4s/MiraiGo/binary/pb/msg"
+	"github.com/Mrs4s/MiraiGo/binary/pb/multimsg"
+	"github.com/Mrs4s/MiraiGo/binary/pb/oidb"
+	"github.com/Mrs4s/MiraiGo/binary/pb/structmsg"
 	"github.com/Mrs4s/MiraiGo/utils"
 	"github.com/golang/protobuf/proto"
 )
@@ -32,169 +33,6 @@ var (
 	groupJoinLock  sync.Mutex
 	groupLeaveLock sync.Mutex
 )
-
-// wtlogin.login
-func decodeLoginResponse(c *QQClient, _ uint16, payload []byte) (interface{}, error) {
-	reader := binary.NewReader(payload)
-	reader.ReadUInt16() // sub command
-	t := reader.ReadByte()
-	reader.ReadUInt16()
-	m := reader.ReadTlvMap(2)
-	if t == 0 { // login success
-		if t150, ok := m[0x150]; ok {
-			c.t150 = t150
-		}
-		if t161, ok := m[0x161]; ok {
-			c.decodeT161(t161)
-		}
-		c.decodeT119(m[0x119])
-		return LoginResponse{
-			Success: true,
-		}, nil
-	}
-	if t == 2 {
-		c.t104, _ = m[0x104]
-		if m.Exists(0x192) { // slider, not supported yet
-			return LoginResponse{
-				Success:   false,
-				VerifyUrl: string(m[0x192]),
-				Error:     SliderNeededError,
-			}, nil
-		}
-		if m.Exists(0x165) { // image
-			imgData := binary.NewReader(m[0x105])
-			signLen := imgData.ReadUInt16()
-			imgData.ReadUInt16()
-			sign := imgData.ReadBytes(int(signLen))
-			return LoginResponse{
-				Success:      false,
-				Error:        NeedCaptcha,
-				CaptchaImage: imgData.ReadAvailable(),
-				CaptchaSign:  sign,
-			}, nil
-		} else {
-			return LoginResponse{
-				Success: false,
-				Error:   UnknownLoginError,
-			}, nil
-		}
-	} // need captcha
-
-	if t == 40 {
-		return LoginResponse{
-			Success:      false,
-			ErrorMessage: "账号被冻结",
-			Error:        UnknownLoginError,
-		}, nil
-	}
-
-	if t == 160 {
-
-		if t174, ok := m[0x174]; ok { // 短信验证
-			c.t104 = m[0x104]
-			c.t174 = t174
-			c.t402 = m[0x402]
-			phone := func() string {
-				r := binary.NewReader(m[0x178])
-				return r.ReadStringLimit(int(r.ReadInt32()))
-			}()
-			if t204, ok := m[0x204]; ok { // 同时支持扫码验证 ?
-				return LoginResponse{
-					Success:      false,
-					Error:        SMSOrVerifyNeededError,
-					VerifyUrl:    string(t204),
-					SMSPhone:     phone,
-					ErrorMessage: string(m[0x17e]),
-				}, nil
-			}
-			return LoginResponse{
-				Success:      false,
-				Error:        SMSNeededError,
-				SMSPhone:     phone,
-				ErrorMessage: string(m[0x17e]),
-			}, nil
-		}
-
-		if _, ok := m[0x17b]; ok { // 二次验证
-			c.t104 = m[0x104]
-			return LoginResponse{
-				Success: false,
-				Error:   SMSNeededError,
-			}, nil
-		}
-
-		if t204, ok := m[0x204]; ok { // 扫码验证
-			return LoginResponse{
-				Success:      false,
-				Error:        UnsafeDeviceError,
-				VerifyUrl:    string(t204),
-				ErrorMessage: "",
-			}, nil
-		}
-
-	}
-
-	if t == 162 {
-		return LoginResponse{
-			Error: TooManySMSRequestError,
-		}, nil
-	}
-
-	if t == 204 {
-		c.t104 = m[0x104]
-		return c.sendAndWait(c.buildDeviceLockLoginPacket(m[0x402]))
-	} // drive lock
-
-	if t149, ok := m[0x149]; ok {
-		t149r := binary.NewReader(t149)
-		t149r.ReadBytes(2)
-		t149r.ReadStringShort() // title
-		return LoginResponse{
-			Success:      false,
-			Error:        OtherLoginError,
-			ErrorMessage: t149r.ReadStringShort(),
-		}, nil
-	}
-
-	if t146, ok := m[0x146]; ok {
-		t146r := binary.NewReader(t146)
-		t146r.ReadBytes(4)      // ver and code
-		t146r.ReadStringShort() // title
-		return LoginResponse{
-			Success:      false,
-			Error:        OtherLoginError,
-			ErrorMessage: t146r.ReadStringShort(),
-		}, nil
-	}
-
-	return nil, errors.New(fmt.Sprintf("unknown login response: %v", t)) // ?
-}
-
-// StatSvc.register
-func decodeClientRegisterResponse(_ *QQClient, _ uint16, payload []byte) (interface{}, error) {
-	request := &jce.RequestPacket{}
-	request.ReadFrom(jce.NewJceReader(payload))
-	data := &jce.RequestDataVersion2{}
-	data.ReadFrom(jce.NewJceReader(request.SBuffer))
-	return nil, nil
-}
-
-// wtlogin.exchange_emp
-func decodeExchangeEmpResponse(c *QQClient, _ uint16, payload []byte) (interface{}, error) {
-	reader := binary.NewReader(payload)
-	cmd := reader.ReadUInt16()
-	t := reader.ReadByte()
-	reader.ReadUInt16()
-	m := reader.ReadTlvMap(2)
-	if t != 0 {
-		c.Error("exchange_emp error: %v", t)
-		return nil, nil
-	}
-	if cmd == 15 { // TODO: 免密登录
-		c.decodeT119R(m[0x119])
-	}
-	return nil, nil
-}
 
 // ConfigPushSvc.PushReq
 func decodePushReqPacket(c *QQClient, _ uint16, payload []byte) (interface{}, error) {
@@ -408,6 +246,7 @@ func decodeGroupMessagePacket(c *QQClient, _ uint16, payload []byte) (interface{
 
 // MessageSvc.PbSendMsg
 func decodeMsgSendResponse(c *QQClient, _ uint16, payload []byte) (interface{}, error) {
+	ioutil.WriteFile("rsp",payload,777)
 	rsp := msg.SendMessageResponse{}
 	if err := proto.Unmarshal(payload, &rsp); err != nil {
 		return nil, err

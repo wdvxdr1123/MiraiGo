@@ -3,7 +3,7 @@ package client
 import (
 	"errors"
 	"fmt"
-	"github.com/Mrs4s/MiraiGo/client/pb/cmd0x346"
+	"github.com/Mrs4s/MiraiGo/binary/pb/cmd0x346"
 	"github.com/Mrs4s/MiraiGo/protocol/packets"
 	"google.golang.org/protobuf/proto"
 )

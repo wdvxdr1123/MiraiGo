@@ -3,7 +3,7 @@ package message
 import (
 	"fmt"
 	"github.com/Mrs4s/MiraiGo/binary"
-	"github.com/Mrs4s/MiraiGo/client/pb/msg"
+	"github.com/Mrs4s/MiraiGo/binary/pb/msg"
 	"strconv"
 	"strings"
 )

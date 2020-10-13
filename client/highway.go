@@ -8,7 +8,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/Mrs4s/MiraiGo/binary"
-	"github.com/Mrs4s/MiraiGo/client/pb"
+	"github.com/Mrs4s/MiraiGo/binary/pb"
 	"github.com/Mrs4s/MiraiGo/utils"
 	"google.golang.org/protobuf/proto"
 	"net"

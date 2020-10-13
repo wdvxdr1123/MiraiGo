@@ -1,0 +1,32 @@
+syntax = "proto2";
+
+option go_package = ".;oidb";
+
+message D899ReqBody {
+  optional uint64 group_code = 1;
+  optional uint64 start_uin = 2;
+  optional uint32 indentify_flag = 3;
+  optional D899MemberList member_list  = 5;
+}
+
+message D899MemberList {
+  optional uint64 member_uin = 1;
+  optional uint32 uin_flag = 2;
+  optional uint32 uin_flagex = 3;
+  optional uint32 uin_mobile_flag = 4;
+  optional uint32 uin_arch_flag = 5;
+  optional uint32 join_time = 6;
+  optional uint32 old_msg_seq = 7;
+  optional uint32 new_msg_seq = 8;
+  optional uint32 last_speak_time = 9;
+  optional uint32 level = 10;
+  optional uint32 point = 11;
+  optional uint32 shutup_timestap = 12;
+  optional uint32 flagex2 = 13;
+  optional bytes special_title = 14;
+  optional uint32 special_title_expire_time = 15;
+  optional uint32  active_day = 16;
+  optional bytes uin_key = 17;
+  optional uint32  privilege = 18;
+  optional bytes rich_info = 19;
+}

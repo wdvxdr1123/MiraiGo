@@ -20,9 +20,9 @@ import (
 	"github.com/golang/protobuf/proto"
 
 	"github.com/Mrs4s/MiraiGo/binary"
-	"github.com/Mrs4s/MiraiGo/client/pb/longmsg"
-	"github.com/Mrs4s/MiraiGo/client/pb/msg"
-	"github.com/Mrs4s/MiraiGo/client/pb/multimsg"
+	"github.com/Mrs4s/MiraiGo/binary/pb/longmsg"
+	"github.com/Mrs4s/MiraiGo/binary/pb/msg"
+	"github.com/Mrs4s/MiraiGo/binary/pb/multimsg"
 	"github.com/Mrs4s/MiraiGo/message"
 	"github.com/Mrs4s/MiraiGo/protocol/packets"
 	"github.com/Mrs4s/MiraiGo/utils"

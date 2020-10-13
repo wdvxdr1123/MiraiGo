@@ -466,25 +466,25 @@ type D89AGroupinfo struct {
 	AddOption              int32                       `protobuf:"varint,16,opt,name=addOption,proto3" json:"addOption,omitempty"`
 	// Types that are assignable to ShutupTime:
 	//	*D89AGroupinfo_Val
-	ShutupTime           isD89AGroupinfo_ShutupTime `protobuf_oneof:"shutupTime"`
-	GroupTypeFlag        int32                      `protobuf:"varint,18,opt,name=groupTypeFlag,proto3" json:"groupTypeFlag,omitempty"`
-	StringGroupTag       []byte                     `protobuf:"bytes,19,opt,name=stringGroupTag,proto3" json:"stringGroupTag,omitempty"`
-	MsgGroupGeoInfo      *D89AGroupGeoInfo          `protobuf:"bytes,20,opt,name=msgGroupGeoInfo,proto3" json:"msgGroupGeoInfo,omitempty"`
-	GroupClassExt        int32                      `protobuf:"varint,21,opt,name=groupClassExt,proto3" json:"groupClassExt,omitempty"`
-	IngGroupClassText    []byte                     `protobuf:"bytes,22,opt,name=ingGroupClassText,proto3" json:"ingGroupClassText,omitempty"`
-	AppPrivilegeFlag     int32                      `protobuf:"varint,23,opt,name=appPrivilegeFlag,proto3" json:"appPrivilegeFlag,omitempty"`
-	AppPrivilegeMask     int32                      `protobuf:"varint,24,opt,name=appPrivilegeMask,proto3" json:"appPrivilegeMask,omitempty"`
-	StGroupExInfo        *D89AGroupExInfoOnly       `protobuf:"bytes,25,opt,name=stGroupExInfo,proto3" json:"stGroupExInfo,omitempty"`
-	GroupSecLevel        int32                      `protobuf:"varint,26,opt,name=groupSecLevel,proto3" json:"groupSecLevel,omitempty"`
-	GroupSecLevelInfo    int32                      `protobuf:"varint,27,opt,name=groupSecLevelInfo,proto3" json:"groupSecLevelInfo,omitempty"`
-	SubscriptionUin      int64                      `protobuf:"varint,28,opt,name=subscriptionUin,proto3" json:"subscriptionUin,omitempty"`
-	AllowMemberInvite    int32                      `protobuf:"varint,29,opt,name=allowMemberInvite,proto3" json:"allowMemberInvite,omitempty"`
-	IngGroupQuestion     []byte                     `protobuf:"bytes,30,opt,name=ingGroupQuestion,proto3" json:"ingGroupQuestion,omitempty"`
-	IngGroupAnswer       []byte                     `protobuf:"bytes,31,opt,name=ingGroupAnswer,proto3" json:"ingGroupAnswer,omitempty"`
-	GroupFlagext3        int32                      `protobuf:"varint,32,opt,name=groupFlagext3,proto3" json:"groupFlagext3,omitempty"`
-	GroupFlagext3Mask    int32                      `protobuf:"varint,33,opt,name=groupFlagext3Mask,proto3" json:"groupFlagext3Mask,omitempty"`
-	GroupOpenAppid       int32                      `protobuf:"varint,34,opt,name=groupOpenAppid,proto3" json:"groupOpenAppid,omitempty"`
-	NoFingerOpenFlag     int32                      `protobuf:"varint,35,opt,name=noFingerOpenFlag,proto3" json:"noFingerOpenFlag,omitempty"`
+	ShutupTime        isD89AGroupinfo_ShutupTime `protobuf_oneof:"shutupTime"`
+	GroupTypeFlag     int32                      `protobuf:"varint,18,opt,name=groupTypeFlag,proto3" json:"groupTypeFlag,omitempty"`
+	StringGroupTag    []byte                     `protobuf:"bytes,19,opt,name=stringGroupTag,proto3" json:"stringGroupTag,omitempty"`
+	MsgGroupGeoInfo   *D89AGroupGeoInfo          `protobuf:"bytes,20,opt,name=msgGroupGeoInfo,proto3" json:"msgGroupGeoInfo,omitempty"`
+	GroupClassExt     int32                      `protobuf:"varint,21,opt,name=groupClassExt,proto3" json:"groupClassExt,omitempty"`
+	IngGroupClassText []byte                     `protobuf:"bytes,22,opt,name=ingGroupClassText,proto3" json:"ingGroupClassText,omitempty"`
+	AppPrivilegeFlag  int32                      `protobuf:"varint,23,opt,name=appPrivilegeFlag,proto3" json:"appPrivilegeFlag,omitempty"`
+	AppPrivilegeMask  int32                      `protobuf:"varint,24,opt,name=appPrivilegeMask,proto3" json:"appPrivilegeMask,omitempty"`
+	StGroupExInfo     *D89AGroupExInfoOnly       `protobuf:"bytes,25,opt,name=stGroupExInfo,proto3" json:"stGroupExInfo,omitempty"`
+	GroupSecLevel     int32                      `protobuf:"varint,26,opt,name=groupSecLevel,proto3" json:"groupSecLevel,omitempty"`
+	GroupSecLevelInfo int32                      `protobuf:"varint,27,opt,name=groupSecLevelInfo,proto3" json:"groupSecLevelInfo,omitempty"`
+	SubscriptionUin   int64                      `protobuf:"varint,28,opt,name=subscriptionUin,proto3" json:"subscriptionUin,omitempty"`
+	AllowMemberInvite int32                      `protobuf:"varint,29,opt,name=allowMemberInvite,proto3" json:"allowMemberInvite,omitempty"`
+	IngGroupQuestion  []byte                     `protobuf:"bytes,30,opt,name=ingGroupQuestion,proto3" json:"ingGroupQuestion,omitempty"`
+	IngGroupAnswer    []byte                     `protobuf:"bytes,31,opt,name=ingGroupAnswer,proto3" json:"ingGroupAnswer,omitempty"`
+	GroupFlagext3     int32                      `protobuf:"varint,32,opt,name=groupFlagext3,proto3" json:"groupFlagext3,omitempty"`
+	GroupFlagext3Mask int32                      `protobuf:"varint,33,opt,name=groupFlagext3Mask,proto3" json:"groupFlagext3Mask,omitempty"`
+	GroupOpenAppid    int32                      `protobuf:"varint,34,opt,name=groupOpenAppid,proto3" json:"groupOpenAppid,omitempty"`
+	NoFingerOpenFlag  int32                      `protobuf:"varint,35,opt,name=noFingerOpenFlag,proto3" json:"noFingerOpenFlag,omitempty"`
 	NoCodeFingerOpenFlag int32                      `protobuf:"varint,36,opt,name=noCodeFingerOpenFlag,proto3" json:"noCodeFingerOpenFlag,omitempty"`
 	RootId               int64                      `protobuf:"varint,37,opt,name=rootId,proto3" json:"rootId,omitempty"`
 	MsgLimitFrequency    int32                      `protobuf:"varint,38,opt,name=msgLimitFrequency,proto3" json:"msgLimitFrequency,omitempty"`

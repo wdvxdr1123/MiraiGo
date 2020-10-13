@@ -2,7 +2,7 @@ package client
 
 import (
 	"fmt"
-	"github.com/Mrs4s/MiraiGo/client/pb/notify"
+	"github.com/Mrs4s/MiraiGo/binary/pb/notify"
 	"strconv"
 )
 

@@ -2,7 +2,7 @@ package message
 
 import (
 	"github.com/Mrs4s/MiraiGo/binary"
-	"github.com/Mrs4s/MiraiGo/client/pb/msg"
+	"github.com/Mrs4s/MiraiGo/binary/pb/msg"
 	"github.com/golang/protobuf/proto"
 )
 
